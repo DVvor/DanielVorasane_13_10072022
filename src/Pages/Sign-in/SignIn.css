@@ -51,6 +51,11 @@
   margin-bottom: 1rem;
 }
 
+/* .error {
+  border: 2px solid red;
+  /* color: red;
+} */
+
 .input-wrapper label {
   font-weight: bold;
 }
