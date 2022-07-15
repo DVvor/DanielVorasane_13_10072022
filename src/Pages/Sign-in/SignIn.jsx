@@ -4,12 +4,18 @@ import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
 import { useState } from 'react'
 import axios from 'axios'
+import { login, getUserFirstName } from '../../Services/callApi'
+import { setUserFirstName, logIn } from '../../Store/store'
+import { useSelector, useDispatch } from 'react-redux'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const userFirstname = useSelector ((state) => state.user)
+  console.log(userFirstname)
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [token, setToken] = useState()
@@ -32,48 +38,27 @@ function SignIn() {
       "email": username,
       "password": password
     }
-    // let token = ""
-    
-    // Simple GET request using axios
-    axios.post('http://localhost:3001/api/v1/user/login', body)
+
+    login('http://localhost:3001/api/v1/user/login', body)
     .then(response => {
-      // console.log(res)
-      // token = res.data.body.token
       if (response.status === 200) {
-        setToken(response.data.body.token)
-        setIsLoggedIn(true)
+        const token = response.data.body.token
+        dispatch(logIn())
         navigate("/user");
-        // console.log(`logStatus: ${isLoggedIn}`)
-        // console.log(`token: ${token}`)
+        getUserFirstName('http://localhost:3001/api/v1/user/profile', {}, token)
+        .then(response => {
+          dispatch(setUserFirstName(response.data.body.firstName))
+        })
       }
     })
     .catch( function(error) {
       if(error.response) {
         console.log("error: login not found")
-        // console.log(`logStatus: ${isLoggedIn}`)
-        setIsLoggedIn(false)
       }
     })
 
-    // if(isLoggedIn) {
-      
-    // }
+    console.log(userFirstname)
   }
-  // console.log(`logStatus: ${isLoggedIn}`)
-  // console.log(`token: ${token}`)
-  
-
-  //   if((username !=="steve@rogers.com") || (password !=="password456"))
-  //   {
-  //     setIsLoggedIn(false)
-  //     console.log("messsage: l'email ou le mot de passe est incorrecte")
-  //     alert("mauvais utilisateur")
-  //   }
-  //   else {
-  //     setIsLoggedIn(true)
-  //     console.log(username, password)
-  //     alert("bon utilisateur")
-  //   }
   
 
 

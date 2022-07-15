@@ -19,6 +19,11 @@
   padding: 5px 20px;
 }
 
+.log-nav {
+  display: flex;
+  
+}
+
 .main-nav a {
   font-weight: bold;
   color: #2c3e50;
