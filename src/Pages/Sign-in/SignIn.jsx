@@ -3,23 +3,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
 import { useState } from 'react'
-import axios from 'axios'
-import { login, getUserFirstName } from '../../Services/callApi'
-import { setUserFirstName, logIn } from '../../Store/store'
-import { useSelector, useDispatch } from 'react-redux'
-import { Navigate, useNavigate } from 'react-router-dom'
+// import axios from 'axios'
+import { login } from '../../Services/callApi'
+import { logIn } from '../../Store/store'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { addItem } from '../../Services/LocalStorage'
+import { getUserInfos } from '../../Services/callApi'
 
 function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  const userFirstname = useSelector ((state) => state.user)
-  console.log(userFirstname)
-
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [token, setToken] = useState()
-  // console.log(username)
 
   function handleUsernameChange(event) {
     const inputValue = event.target.value
@@ -43,12 +39,14 @@ function SignIn() {
     .then(response => {
       if (response.status === 200) {
         const token = response.data.body.token
-        dispatch(logIn())
-        navigate("/user");
-        getUserFirstName('http://localhost:3001/api/v1/user/profile', {}, token)
+        addItem('token', token)
+        getUserInfos('http://localhost:3001/api/v1/user/profile', {}, token)
         .then(response => {
-          dispatch(setUserFirstName(response.data.body.firstName))
+          const user = JSON.stringify(response.data.body) // The JSON.stringify() method converts a JavaScript value into a JSON string. 
+          addItem('user', user)
         })
+        dispatch(logIn())
+        navigate("/user")
       }
     })
     .catch( function(error) {
@@ -56,8 +54,6 @@ function SignIn() {
         console.log("error: login not found")
       }
     })
-
-    console.log(userFirstname)
   }
   
 
@@ -74,6 +70,7 @@ function SignIn() {
           <div className="input-wrapper">
             <label name="username"> Username </label>
             <input type="text" id="username" onChange={handleUsernameChange}  /> 
+            {/* style error css */}
             {/*  className={isLoggedIn ? "" : "error"} */}
           </div>
           <div className="input-wrapper">
@@ -84,13 +81,7 @@ function SignIn() {
             <input type="checkbox" id="remember-me" />
             <label name="remember-me">Remember me </label>
           </div>
-           {/* PLACEHOLDER DUE TO STATIC SITE */}
-          {/* <Link to="/user">
-            <button className="sign-in-button" >Sign In</button>
-          </Link> */}
-            {/* SHOULD BE THE BUTTON BELOW  */}
               <button className="sign-in-button" >Sign In</button>
-              {/* {AuthButton} */}
         </form>
       </div>
     </main>

@@ -6,30 +6,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
 
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../../Store/store'
+import { removeItem } from '../../Services/LocalStorage';
 
-// Pages
-// import Home from '../../Pages/Home/Home'
+
 
 /**
  * Create a component
  * @returns { JSX }
  */
-
-
-
 function Header() { 
-  const userFirstname = useSelector ((state) => state.user)
+  const userFirstname = useSelector ((state) => state.user.firstName)
   const isLoggedIn = useSelector ((state) => state.logState)
   const dispatch = useDispatch()
-
   let button;
   let userbutton;
 
+
   function handleClick() {
     dispatch(logOut())
+    removeItem("token")
+    removeItem("user")
   }
 
   // Display nav-item different according to login/logout
@@ -41,6 +39,7 @@ function Header() {
     Sign In
     </Link>
   } else {
+
     userbutton =
     <Link className="main-nav-item" to="/user">
       <FontAwesomeIcon icon={faCircleUser} />
@@ -54,7 +53,6 @@ function Header() {
       Sign out
     </Link>;
   }
-
 
   return (
       <header>
