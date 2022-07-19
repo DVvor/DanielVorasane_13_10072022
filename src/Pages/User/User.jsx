@@ -1,7 +1,8 @@
 import './User.css'
 // import { useSelector } from 'react-redux'
 // import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useState } from 'react'
 
 function User() {
   // const userFirstname = useSelector ((state) => state.userfirstName)
@@ -10,9 +11,27 @@ function User() {
   const isLoggedIn = useSelector ((state) => state.logState)
   const userFirstname = useSelector ((state) => state.user.firstName)
   const userLastname = useSelector ((state) => state.user.lastName)
-  
+  const dispatch = useDispatch()
 
-  console.log(isLoggedIn, userFirstname)
+  const [formEditName, setFormEditName] = useState(false);
+  const [firstName, setFirstName] = useState(userFirstname);
+  const [lastName, setLastName] = useState(userLastname);
+
+  
+  function handleClickEditName() {
+    console.log(formEditName)
+    setFormEditName(true)
+  }
+
+  function closeEdit() {
+    setFormEditName(false)
+  }
+
+  function saveEdit() {
+    setFormEditName(false)
+    // dispatch(firstName)
+    // dispatch(lastName)
+  }
 
   if(isLoggedIn) {
 
@@ -20,7 +39,21 @@ function User() {
       <main className="main-user bg-dark">
         <div className="header">
           <h1>Welcome back<br />{`${userFirstname} ${userLastname}`}</h1>
-          <button className="edit-button">Edit Name</button>
+          { !formEditName ?
+            <button className="edit-button" onClick={handleClickEditName}>Edit Name</button>
+          : "" }
+          { formEditName ?
+            <form className='editname-form-bl' >
+              <div className="editname-form">
+                <input type="text" className="input-editname" id="firstname" placeholder={userFirstname} onChange={(event) => {setFirstName(event.target.value)}}/>
+                <button onClick={saveEdit}>Save</button>
+              </div>
+              <div className="editname-form">
+                <input type="text" className="input-editname" id="lastname" placeholder={userLastname} onChange={(event) => {setLastName(event.target.value)}}/>
+                <button onClick={closeEdit}>Cancel</button>
+              </div>
+            </form>
+          : "" }
         </div>
         {/* <h2 className="sr-only">Accounts</h2> */}
         <section className="account">

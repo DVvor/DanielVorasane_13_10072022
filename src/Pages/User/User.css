@@ -87,3 +87,33 @@
     width: 200px;
   }
 }
+
+.editname-form-bl {
+  display: flex;
+  flex-direction: row;
+}
+
+.editname-form {
+  display: flex;
+  flex-direction: column;
+}
+.editname-form:nth-child(1) {
+  align-items: end;
+}
+
+.input-editname {
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  font-size: small;
+}
+
+button {
+  width: 100px;
+  padding: 5px 10px 5px 10px;
+  margin: 10px;
+  cursor: pointer;
+  border: 2px solid  rgb(100, 95, 245);
+  color: rgb(100, 95, 245);
+  font-size: small;
+}
