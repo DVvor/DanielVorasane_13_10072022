@@ -108,7 +108,7 @@
   font-size: small;
 }
 
-button {
+.btn-editname {
   width: 100px;
   padding: 5px 10px 5px 10px;
   margin: 10px;

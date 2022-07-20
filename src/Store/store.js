@@ -5,17 +5,23 @@ import { getItem } from '../Services/LocalStorage'
 
 // Initial state 
 const isLogged = checkTokenInLocalstorage()
-// const hasFirstName = retrieveFisrtNameLocalStorage()
-// const hasLastName = RetrieveLastNameLocalStorage()
-const hasUserInfos = retrieveUserInfos()
+
+const userInfos = {
+  firstName: "",
+  lastName : ""
+}
 
 // Create action
 export const logIn = createAction('logIn')
 export const logOut = createAction('logOut');
 
-// export const firstName = createAction('hasFirstName')
-// export const lastName = createAction('hasLastName')
-export const user = createAction('user')
+
+export const getUserData = createAction(
+  'getUserData',
+  (user) => ({
+    payload: { user: user }, // should be an object
+  })
+);
 
 // Create reducer allowing to put the state in the store
 const logStateReducer = createReducer(isLogged,(builder) =>
@@ -28,17 +34,11 @@ const logStateReducer = createReducer(isLogged,(builder) =>
     })
 )
 
-// const userfirstNameReducer = createReducer(hasFirstName,(builder) =>
-//   builder
-//     .addCase(firstName, (action) => {
-//       return action.payload.name
-//     })
-// )
-
-const userReducer = createReducer(hasUserInfos,(builder) =>
+// Create reducer allowing to put user's infos in the store
+const userReducer = createReducer(userInfos, (builder) =>
   builder
-    .addCase(user, (action) => {
-      return action.payload.name
+    .addCase(getUserData, (draft, action) => {
+      return action.payload.user
     })
 )
 
@@ -53,52 +53,9 @@ function checkTokenInLocalstorage() {
   }
 }
 
-//Retrieve user infos in local storage
-// function retrieveFisrtNameLocalStorage() {
-//   const userInfos = JSON.parse(getItem('user'))
-//   if (userInfos) {
-//     return userInfos.firstName
-//   }
-// }
-
-function retrieveUserInfos() {
-  const userInfos = JSON.parse(getItem('user'))
-  if (userInfos) {
-    return userInfos
-  } else {
-    return ""
-  }
-}
-
 export default configureStore({
   reducer: {
-    // userfirstName: userfirstNameReducer,
-    // userLasttName: userLastNameReducer,
     logState: logStateReducer,
     user: userReducer
-
   },
 })
-
-
-
-
-// const LastName = ""
-
-
-// export const setUserFirstName = createAction(
-//   'setUserFirstName',
-//   (name) => ({
-//     payload: { userfirstName: name },
-//   })
-// );
-
-// export const setUserLastName = createAction(
-//   'setUserLastName',
-//   (name) => ({
-//     payload: { userLastName: name },
-//   })
-// );
-
-
-
