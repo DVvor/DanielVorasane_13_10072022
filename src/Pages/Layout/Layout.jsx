@@ -1,8 +1,8 @@
-import React from 'react'
 import Header from "../../Components/Header/Header"
 import Footer from '../../Components/Footer/Footer'
 import './Layout.css'
 
+import React from 'react'
 import { Outlet } from 'react-router-dom'
 
 /**

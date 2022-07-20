@@ -7,7 +7,6 @@ import securityIcon from '../../Assets/icon-security.png'
 
 
 function Home() {
-  
   return (
   <>
   <main className='main-home'>

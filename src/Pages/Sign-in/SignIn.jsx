@@ -3,13 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
 import { useState } from 'react'
-// import axios from 'axios'
-import { login } from '../../Services/callApi'
-import { logIn } from '../../Store/store'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+
 import { addItem } from '../../Services/LocalStorage'
-import { getUserInfos } from '../../Services/callApi'
+import { getUserInfos, login } from '../../Services/callApi'
+import { logIn } from '../../Store/store'
 
 function SignIn() {
   const navigate = useNavigate();
@@ -17,17 +16,17 @@ function SignIn() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  function handleUsernameChange(event) {
+  function RetrieveUsernameInput(event) {
     const inputValue = event.target.value
     setUsername(inputValue)
   }
 
-  function handlePasswordChange(event) {
+  function RetrievePasswordInput(event) {
     const inputValue = event.target.value
     setPassword(inputValue)
   }
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault()
 
     const body = {
@@ -45,7 +44,7 @@ function SignIn() {
           const user = JSON.stringify(response.data.body) // The JSON.stringify() method converts a JavaScript value into a JSON string. 
           addItem('user', user)
         })
-        dispatch(logIn())
+        dispatch(logIn()) // Change status is logged in store
         navigate("/user")
       }
     })
@@ -55,8 +54,6 @@ function SignIn() {
       }
     })
   }
-  
-
 
   return (
     <main className="main bg-dark">
@@ -69,13 +66,13 @@ function SignIn() {
         <form onSubmit={handleSubmit}>
           <div className="input-wrapper">
             <label name="username"> Username </label>
-            <input type="text" id="username" onChange={handleUsernameChange}  /> 
+            <input type="text" id="username" onChange={RetrieveUsernameInput}  /> 
             {/* style error css */}
             {/*  className={isLoggedIn ? "" : "error"} */}
           </div>
           <div className="input-wrapper">
             <label name="password"> Password </label>
-            <input type="password" id="password" onChange={handlePasswordChange} />
+            <input type="password" id="password" onChange={RetrievePasswordInput} />
           </div>
           <div className="input-remember">
             <input type="checkbox" id="remember-me" />
@@ -86,7 +83,6 @@ function SignIn() {
       </div>
     </main>
   )
-
 }
 
 export default SignIn 
