@@ -41,6 +41,7 @@ function SignIn() {
         addItem('token', token)
         getUserInfos('http://localhost:3001/api/v1/user/profile', {}, token)
         .then(response => {
+          console.log(response)
           const user = JSON.stringify(response.data.body) // The JSON.stringify() method converts a JavaScript value into a JSON string. 
           addItem('user', user)
         })

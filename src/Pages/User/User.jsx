@@ -1,18 +1,20 @@
 import './User.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
+import { changeUserInfos } from '../../Services/callApi'
+import { getItem } from '../../Services/LocalStorage'
+import { changeUserName } from '../../Store/store'
 
 function User() {
-  const userFirstname = useSelector ((state) => state.user.firstName)
-  const userLastname = useSelector ((state) => state.user.lastName)
+  const userFirstName = useSelector ((state) => state.user.firstName)
+  const userLastName = useSelector ((state) => state.user.lastName)
   const dispatch = useDispatch()
 
   const [formEditName, setFormEditName] = useState(false);
-  const [firstName, setFirstName] = useState(userFirstname);
-  const [lastName, setLastName] = useState(userLastname);
+  const [firstName, setFirstName] = useState(userFirstName);
+  const [lastName, setLastName] = useState(userLastName);
 
   function ClickEditName() {
-    console.log(formEditName)
     setFormEditName(true)
   }
 
@@ -20,27 +22,42 @@ function User() {
     setFormEditName(false)
   }
 
-  function saveEdit() {
+  function saveEdit(event) {
+    event.preventDefault();
     setFormEditName(false)
-    dispatch(firstName)
-    dispatch(lastName)
+    console.log(firstName, lastName)
+
+    let userInfos = {
+      firstName: firstName,
+      lastName : lastName
+    }
+    const token = getItem('token')
+
+    changeUserInfos('http://localhost:3001/api/v1/user/profile', userInfos, token)
+
+    dispatch(changeUserName(userInfos))
+    console.log(userFirstName,userLastName)
   }
 
   return (
     <main className="main-user bg-dark">
       <div className="header">
-        <h1>Welcome back<br />{`${userFirstname} ${userLastname}`}</h1>
+        <h1>Welcome back<br />{`${userFirstName} ${userLastName}`}</h1>
         { !formEditName ?
           <button className="edit-button" onClick={ClickEditName}>Edit Name</button>
         : "" }
         { formEditName ?
-          <form className='editname-form-bl' >
+          <form action="" className='editname-form-bl' >
             <div className="editname-form">
-              <input type="text" className="input-editname" id="firstname" placeholder={userFirstname} onChange={(event) => {setFirstName(event.target.value)}}/>
-              <button className='btn-editname' onClick={saveEdit}>Save</button>
+              <input required type="text" name='firstname' className="input-editname" id="firstname" placeholder={userFirstName}
+              onChange={
+                (event) => setFirstName(event.target.value) }/>
+              <button type='submit' className='btn-editname' onClick={saveEdit}>Save</button>
             </div>
             <div className="editname-form">
-              <input type="text" className="input-editname" id="lastname" placeholder={userLastname} onChange={(event) => {setLastName(event.target.value)}}/>
+              <input required type="text" name='lasttname' className="input-editname" id="lastname" placeholder={userLastName}
+              onChange={
+                (event) => {setLastName(event.target.value)}}/>
               <button className='btn-editname' onClick={closeEdit}>Cancel</button>
             </div>
           </form>

@@ -16,3 +16,15 @@ export function getUserInfos(endPoint, body, token) {
 
   return axios.post(endPoint, body, headers )
 }
+
+
+// Update firstname and lastname in API
+export function changeUserInfos(endPoint, body, token) {
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+
+  return axios.put(endPoint, body, headers )
+}

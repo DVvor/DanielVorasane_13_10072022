@@ -23,6 +23,14 @@ export const getUserData = createAction(
   })
 );
 
+export const changeUserName = createAction(
+  'changeUserName',
+  (user) => ({
+    payload: { user: user }, // should be an object
+  })
+);
+
+
 // Create reducer allowing to put the state in the store
 const logStateReducer = createReducer(isLogged,(builder) =>
   builder
@@ -40,7 +48,19 @@ const userReducer = createReducer(userInfos, (builder) =>
     .addCase(getUserData, (draft, action) => {
       return action.payload.user
     })
+    .addCase(changeUserName, (draft, action) => {
+      return action.payload.user
+    })
 )
+
+// // Create reducer allowing to update user's name (firstname and lastname) in the store
+// let userReducer = createReducer(userInfos, (builder) =>
+//   builder
+//     .addCase(changeUserName, (draft, action) => {
+//       return action.payload.user
+//     })
+// )
+
 
 // Retrieve token in local storage
 function checkTokenInLocalstorage() {
