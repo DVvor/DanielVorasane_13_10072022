@@ -105,7 +105,8 @@
   padding: 10px;
   margin: 10px;
   cursor: pointer;
-  font-size: small;
+  font-size: 14px;
+  color:navy
 }
 
 .btn-editname {
@@ -116,4 +117,11 @@
   border: 2px solid  rgb(100, 95, 245);
   color: rgb(100, 95, 245);
   font-size: small;
+}
+
+.error {
+  /* border: 3px solid red; */
+  color: red;
+  margin: 0;
+  font-size: large;
 }

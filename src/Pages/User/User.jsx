@@ -13,30 +13,40 @@ function User() {
   const [formEditName, setFormEditName] = useState(false);
   const [firstName, setFirstName] = useState(userFirstName);
   const [lastName, setLastName] = useState(userLastName);
-
+  const [error, setError] = useState(false);
+  let validInput = /^[a-zA-ZÀ-ÿ ]+$/ // Regex 
+  
   function ClickEditName() {
     setFormEditName(true)
   }
 
-  function closeEdit() {
-    setFormEditName(false)
+  function closeEdit(event) {
+    // event.preventDefault();
+    if(error) {
+      setFormEditName(true)
+    } else {
+      setFormEditName(false)
+    }
   }
 
-  function saveEdit(event) {
-    event.preventDefault();
-    setFormEditName(false)
-    console.log(firstName, lastName)
+  function saveEdit() {
 
     let userInfos = {
       firstName: firstName,
       lastName : lastName
     }
-    const token = getItem('token')
 
-    changeUserInfos('http://localhost:3001/api/v1/user/profile', userInfos, token)
+    // event.preventDefault()
 
-    dispatch(changeUserName(userInfos))
-    console.log(userFirstName,userLastName)
+    if (!validInput.test(firstName) || !validInput.test(lastName)|| firstName.length === 0 || lastName.length === 0) {
+      setError(true)
+    } else {
+      setFormEditName(false)
+      setError(false)
+      const token = getItem('token')
+      changeUserInfos('http://localhost:3001/api/v1/user/profile', userInfos, token)
+      dispatch(changeUserName(userInfos))
+    }
   }
 
   return (
@@ -49,19 +59,29 @@ function User() {
         { formEditName ?
           <form action="" className='editname-form-bl' >
             <div className="editname-form">
-              <input required type="text" name='firstname' className="input-editname" id="firstname" placeholder={userFirstName}
+              <input 
+              required type="text" 
+              name='firstname' 
+              id="firstname" 
+              className= "input-editname"
+              // className={!error ? "input-editname" : " input-editname error"}
+              placeholder={userFirstName}
               onChange={
-                (event) => setFirstName(event.target.value) }/>
-              <button type='submit' className='btn-editname' onClick={saveEdit}>Save</button>
+                (event) => {setFirstName(event.target.value)} }
+              />
+              <button type='button' className='btn-editname' onClick={saveEdit}>Save</button>
             </div>
             <div className="editname-form">
               <input required type="text" name='lasttname' className="input-editname" id="lastname" placeholder={userLastName}
               onChange={
-                (event) => {setLastName(event.target.value)}}/>
-              <button className='btn-editname' onClick={closeEdit}>Cancel</button>
+                (event) => {setLastName(event.target.value)} }/>
+              <button type="button" className='btn-editname' onClick={closeEdit}>Cancel</button>
             </div>
           </form>
         : "" }
+        { error ?
+      <p className='error'>Le champs du nom et/ou prénom n'est pas valide. Veuillez recommencer </p>
+    : "" }
       </div>
       {/* <h2 className="sr-only">Accounts</h2> */}
       <section className="account">
