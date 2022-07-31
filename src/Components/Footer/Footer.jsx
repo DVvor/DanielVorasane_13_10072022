@@ -1,9 +1,5 @@
 import './Footer.css'
 import { React } from 'react'
-// import Link from 'react'
-
-// Pages
-// import Home from '../../Pages/Home/Home'
 
 /**
  * Create a component

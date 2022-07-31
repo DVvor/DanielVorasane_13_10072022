@@ -10,10 +10,7 @@
   line-height: 411px;
   letter-spacing: 0em;
   text-align: center;
-  /* color: #2c3e50; */
   color: #42b983;
-
-  ;
 }
 
 .message-errorpage {
@@ -22,9 +19,7 @@
   line-height: 51px;
   letter-spacing: 0em;
   text-align: left;
-  /* color: #42b983; */
   color: #2c3e50;
   text-align: center;
-
 }
 

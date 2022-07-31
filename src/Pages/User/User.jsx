@@ -30,15 +30,15 @@ function User() {
   }
 
   function saveEdit() {
-
     let userInfos = {
       firstName: firstName,
       lastName : lastName
     }
 
-    // event.preventDefault()
-
-    if (!validInput.test(firstName) || !validInput.test(lastName)|| firstName.length === 0 || lastName.length === 0) {
+    if (!validInput.test(firstName) || 
+      !validInput.test(lastName)|| 
+      firstName.length === 0 || 
+      lastName.length === 0) {
       setError(true)
     } else {
       setFormEditName(false)

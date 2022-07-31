@@ -10,7 +10,6 @@ import User from './Pages/User/User';
 
 function App() {
   return (
-    // <> 
       <BrowserRouter>
         <Routes>
           <Route path='/' element= {<Layout />}>
@@ -19,12 +18,9 @@ function App() {
             <Route index path='/signin' element={<SignIn />} />
             <Route index path='/user' element={<User />} />
             <Route path='/*' element={<Errorpage />} />
-            
           </Route>
-
         </Routes>
       </BrowserRouter>
-    // </>
   );
 }
 

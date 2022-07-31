@@ -53,15 +53,6 @@ const userReducer = createReducer(userInfos, (builder) =>
     })
 )
 
-// // Create reducer allowing to update user's name (firstname and lastname) in the store
-// let userReducer = createReducer(userInfos, (builder) =>
-//   builder
-//     .addCase(changeUserName, (draft, action) => {
-//       return action.payload.user
-//     })
-// )
-
-
 // Retrieve token in local storage
 function checkTokenInLocalstorage() {
   const token = getItem('token')
